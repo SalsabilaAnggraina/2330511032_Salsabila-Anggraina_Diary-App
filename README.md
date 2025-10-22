@@ -1,50 +1,90 @@
-# Welcome to your Expo app 👋
+# Praktikum React Native – Design Tokens, FlatList, dan Modal
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Cara Menjalankan
 
-## Get started
-
-1. Install dependencies
+1. Pastikan sudah menginstal **Node.js**, **npm**, dan **Expo CLI**.
+   Jalankan verifikasi versi di terminal:
 
    ```bash
-   npm install
+   node -v
+   npm -v
+   npx expo --version
+   ```
+2. Jalankan proyek:
+
+   ```bash
+   npm start
    ```
 
-2. Start the app
+   atau
 
    ```bash
    npx expo start
    ```
+3. Pilih mode:
 
-In the output, you'll find options to open the app in a
+   * **Emulator Android (AVD)** di Android Studio, atau
+   * **Expo Go App** di perangkat fisik dengan scan QR code.
+4. Setelah berhasil, aplikasi akan menampilkan halaman **Buku Harian** berisi daftar entri yang bisa diklik.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Perangkat Uji
 
-## Get a fresh project
+* **Laptop:** Windows 10
+* **Emulator:** Android Studio (Pixel 6 API 34)
+* **Perangkat Fisik:** Android 13 (Expo Go)
+* **Resolusi Uji:** 1 kolom (mobile) dan 2 kolom (tablet/web, width ≥ 600px)
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
-```
+## 🎨 Implementasi & Fitur
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Design Tokens
 
-## Learn more
+File `src/styles/tokens.js` digunakan untuk menyimpan gaya global seperti **warna (COLORS)**, **jarak (SPACE)**, **radius (RADIUS)**, dan **ukuran teks (TYPO)** agar seluruh komponen konsisten dan mudah dikontrol.
 
-To learn more about developing your project with Expo, look at the following resources:
+### DiaryCard (Refactor StyleSheet)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Komponen `DiaryCard.js` menggunakan `StyleSheet` dengan variabel token. Didesain fleksibel untuk dua varian tampilan: **list** (satu kolom) dan **grid** (dua kolom). Aksesibilitas ditingkatkan dengan `accessibilityLabel`, warna teks kontras, dan area sentuh yang cukup besar menggunakan `Pressable`.
 
-## Join the community
+### FlatList Responsif
 
-Join our community of developers creating universal apps.
+Komponen `DiaryListScreen.js` menampilkan daftar entri dengan **FlatList**. Layout berubah otomatis:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* **1 kolom** di layar ponsel.
+* **2 kolom** di tablet/web (`width ≥ 600`).
+  Responsivitas dikontrol menggunakan `useWindowDimensions()` dan `BREAKPOINTS.tablet`.
+
+### DiaryDetailModal
+
+Komponen `DiaryDetailModal.js` menampilkan detail entri dalam **Modal** saat kartu ditekan. Modal berisi gambar, judul, tanggal, isi catatan, dan tombol **Tutup**. Ditambahkan gaya visual menggunakan token agar konsisten dengan tampilan utama.
+
+### Integrasi di App.js
+
+Komponen utama `DiaryListScreen` di-render di dalam `App.js` dengan `SafeAreaView` untuk menjaga area aman di berbagai perangkat.
+
+---
+
+## Aksesibilitas
+
+* **accessibilityLabel** diterapkan pada setiap kartu agar pembaca layar dapat mengenali konten.
+* Warna teks dan latar mengikuti kontras yang baik antara **COLORS.text** dan **COLORS.surface**.
+* **Pressable** memberikan area sentuh yang cukup luas untuk interaksi nyaman.
+* **Ripple effect (Android)** membantu memberi umpan balik visual saat ditekan.
+
+---
+
+## Screenshot
+
+| Mode                     | Tampilan                               |
+| ------------------------ | -------------------------------------- |
+| **Smartphone (1 kolom)**     | ![Mobile view](screenshots/mobile.png) |
+| **Web (2 kolom)** | ![Tablet view](screenshots/web.png) |
+
+---
+
+## Ringkasan Belajar
+
+Dalam praktikum ini, saya belajar menerapkan **design tokens** agar gaya aplikasi lebih konsisten dan mudah diatur di seluruh komponen. Saya juga memahami penggunaan **FlatList** yang dapat menyesuaikan jumlah kolom secara otomatis berdasarkan lebar layar, menciptakan tampilan responsif di berbagai perangkat.
+Pembuatan **DiaryDetailModal** memperkenalkan konsep navigasi berbasis modal untuk menampilkan detail data tanpa berpindah halaman. Selain itu, penerapan prinsip **aksesibilitas** meningkatkan kenyamanan pengguna dengan pembacaan label dan kontras warna yang jelas. Praktikum ini memperdalam pemahaman saya tentang arsitektur gaya terstruktur, responsivitas layout, dan pengalaman pengguna yang inklusif dalam pengembangan aplikasi React Native modern.
